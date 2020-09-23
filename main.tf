@@ -74,18 +74,20 @@ resource "hcloud_server" "servers" {
 resource "hcloud_rdns" "servers" {
   for_each   = merge(
     {
-      for server in hcloud_server.servers : "${server.name}:ipv4" => {
-        "dns_ptr"    = server.name
+      for name, server in hcloud_server.servers : "${name}:ipv4" => {
+        "dns_ptr"    = local.servers[name].dns_ptr
         "ip_address" = server.ipv4_address
         "server_id"  = server.id
-      } if(local.servers[server.name].set_rdns == true)
+        } if(lookup(local.servers[name], "dns_ptr", null) != null &&
+            local.servers[name].dns_ptr != "")
     },
     {
-      for server in hcloud_server.servers : "${server.name}:ipv6" => {
-        "dns_ptr"    = server.name
+      for name, server in hcloud_server.servers : "${name}:ipv6" => {
+        "dns_ptr"    = local.servers[name].dns_ptr
         "ip_address" = server.ipv6_address
         "server_id"  = server.id
-      } if(local.servers[server.name].set_rdns == true)
+        } if(lookup(local.servers[name], "dns_ptr", null) != null &&
+            local.servers[name].dns_ptr != "")
     }
   )
 

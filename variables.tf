@@ -8,7 +8,7 @@
 # ---------------
 
 variable "servers" {
-  description = "The list of server objects to be managed. Each server object supports the following parameters: 'name' (string, required), 'image' (string, required), 'server_type' (string, required), 'backups' (bool, optional), 'datacenter' (string, optional), 'floating_ips' (list of floating IP ids, optional), 'keep_disk' (bool, optional), 'location' (string, optional), 'networks' (list of network objects, optional), 'set_rdns' (bool, optional), 'ssh_keys' (list of SSH key ids/names, optional), 'user_data' (string, optional), 'volumes' (list of volume objects, optional), 'labels' (map of KV pairs, optional). Each network object supports the following parameters: 'subnet_id' (string, required), 'alias_ips' (list of IP strings, optional), 'ip' (string, optional). Each volume object supports the following parameters: 'volume_id' (string, required), 'automount' (bool, optional)."
+  description = "The list of server objects to be managed. Each server object supports the following parameters: 'name' (string, required), 'image' (string, required), 'server_type' (string, required), 'backups' (bool, optional), 'datacenter' (string, optional), 'dns_ptr' (string, optional), 'floating_ips' (list of floating IP ids, optional), 'keep_disk' (bool, optional), 'location' (string, optional), 'networks' (list of network objects, optional), 'ssh_keys' (list of SSH key ids/names, optional), 'user_data' (string, optional), 'volumes' (list of volume objects, optional), 'labels' (map of KV pairs, optional). Each network object supports the following parameters: 'subnet_id' (string, required), 'alias_ips' (list of IP strings, optional), 'ip' (string, optional). Each volume object supports the following parameters: 'volume_id' (string, required), 'automount' (bool, optional)."
 
   type = list(
     object({
@@ -17,6 +17,7 @@ variable "servers" {
       server_type  = string
       backups      = bool
       datacenter   = string
+      dns_ptr      = string
       floating_ips = list(string)
       keep_disk    = bool
       location     = string
@@ -27,7 +28,6 @@ variable "servers" {
           ip        = string
         })
       )
-      set_rdns     = bool
       ssh_keys     = list(string)
       user_data    = string
       volumes      = list(
@@ -47,11 +47,11 @@ variable "servers" {
       server_type  = "cx11"
       backups      = false
       datacenter   = null
+      dns_ptr      = null
       floating_ips = []
       keep_disk    = false
       location     = null
       networks     = []
-      set_rdns     = false
       ssh_keys     = []
       user_data    = null
       volumes      = []
