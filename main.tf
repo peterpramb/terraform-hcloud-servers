@@ -18,9 +18,9 @@ locals {
   float_ips = {
     for float_ip in flatten([
       for server in local.servers : [
-        for float_ip in server.float_ips : { "floating_ip_id" = float_ip
-                                             "server" = server.name }
-      ] if(lookup(server, "float_ips", null) != null)
+        for float_ip in server.floating_ips : { "floating_ip_id" = float_ip
+                                                "server" = server.name }
+      ] if(lookup(server, "floating_ips", null) != null)
     ]) : "${float_ip.server}:${float_ip.floating_ip_id}" => float_ip
   }
 

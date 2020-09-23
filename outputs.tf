@@ -29,7 +29,7 @@ output "servers" {
           for rdns in hcloud_rdns.servers : rdns if(tostring(rdns.server_id) == server.id)
         ]
       }, {
-        "float_ips" = [
+        "floating_ips" = [
           for float_ip in hcloud_floating_ip_assignment.servers : float_ip if(tostring(float_ip.server_id) == server.id)
         ]
       }, {
@@ -65,21 +65,21 @@ output "server_rdns" {
   ]
 }
 
-output "server_float_ip_ids" {
+output "server_floating_ip_ids" {
   description = "A map of all server floating IP ids and associated names."
   value = {
     for name, float_ip in hcloud_floating_ip_assignment.servers : float_ip.id => name
   }
 }
 
-output "server_float_ip_names" {
+output "server_floating_ip_names" {
   description = "A map of all server floating IP names and associated ids."
   value = {
     for name, float_ip in hcloud_floating_ip_assignment.servers : name => float_ip.id
   }
 }
 
-output "server_float_ips" {
+output "server_floating_ips" {
   description = "A list of all server floating IP objects."
   value = [
     for float_ip in hcloud_floating_ip_assignment.servers : float_ip
