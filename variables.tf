@@ -93,7 +93,7 @@ variable "servers" {
   validation {
     condition = can([
       for server in var.servers : [
-        for network in server.networks : regex("\\w+", network.subnet)
+        for network in server.networks : regex("[[:xdigit:]]+", network.subnet)
       ]
     ])
     error_message = "All networks must have a valid 'subnet' attribute specified."
