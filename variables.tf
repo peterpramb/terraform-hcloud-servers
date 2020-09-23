@@ -8,7 +8,7 @@
 # ---------------
 
 variable "servers" {
-  description = "The list of server objects to be managed. Each server object supports the following parameters: 'name' (string, required), 'image' (string, required), 'server_type' (string, required), 'backups' (bool, optional), 'datacenter' (string, optional), 'dns_ptr' (string, optional), 'floating_ips' (list of floating IP ids, optional), 'keep_disk' (bool, optional), 'location' (string, optional), 'networks' (list of network objects, optional), 'ssh_keys' (list of SSH key ids/names, optional), 'user_data' (string, optional), 'volumes' (list of volume objects, optional), 'labels' (map of KV pairs, optional). Each network object supports the following parameters: 'subnet_id' (string, required), 'alias_ips' (list of IP strings, optional), 'ip' (string, optional). Each volume object supports the following parameters: 'volume_id' (string, required), 'automount' (bool, optional)."
+  description = "The list of server objects to be managed. Each server object supports the following parameters: 'name' (string, required), 'image' (string, required), 'server_type' (string, required), 'backups' (bool, optional), 'datacenter' (string, optional), 'dns_ptr' (string, optional), 'floating_ips' (list of floating IP names, optional), 'keep_disk' (bool, optional), 'location' (string, optional), 'networks' (list of network objects, optional), 'ssh_keys' (list of SSH key ids/names, optional), 'user_data' (string, optional), 'volumes' (list of volume objects, optional), 'labels' (map of KV pairs, optional). Each network object supports the following parameters: 'name' (string, required), 'subnet' (string, required), 'alias_ips' (list of IP addresses, optional), 'ip' (string, optional). Each volume object supports the following parameters: 'name' (string, required), 'automount' (bool, optional)."
 
   type = list(
     object({
@@ -23,7 +23,8 @@ variable "servers" {
       location     = string
       networks     = list(
         object({
-          subnet_id = string
+          name      = string
+          subnet    = string
           alias_ips = list(string)
           ip        = string
         })
@@ -32,7 +33,7 @@ variable "servers" {
       user_data    = string
       volumes      = list(
         object({
-          volume_id = string
+          name      = string
           automount = bool
         })
       )
@@ -83,18 +84,27 @@ variable "servers" {
   validation {
     condition = can([
       for server in var.servers : [
-        for network in server.networks : regex("\\w+", network.subnet_id)
+        for network in server.networks : regex("\\w+", network.name)
       ]
     ])
-    error_message = "All networks must have a valid 'subnet_id' attribute specified."
+    error_message = "All networks must have a valid 'name' attribute specified."
   }
 
   validation {
     condition = can([
       for server in var.servers : [
-        for volume in server.volumes : regex("\\w+", volume.volume_id)
+        for network in server.networks : regex("\\w+", network.subnet)
       ]
     ])
-    error_message = "All volumes must have a valid 'volume_id' attribute specified."
+    error_message = "All networks must have a valid 'subnet' attribute specified."
+  }
+
+  validation {
+    condition = can([
+      for server in var.servers : [
+        for volume in server.volumes : regex("\\w+", volume.name)
+      ]
+    ])
+    error_message = "All volumes must have a valid 'name' attribute specified."
   }
 }
