@@ -8,21 +8,38 @@
 # ------------
 
 locals {
-  # Build a map of all provided server objects, indexed by server name.
-  servers = {
+  # Build a map of all provided server objects, indexed by server name:
+  servers  = {
     for server in var.servers : server.name => server
   }
 
+  # Build a map of all provided server RDNS objects, indexed by server
+  # name and protocol:
+  rdns     = merge(
+    {
+      for server in local.servers : "${server.name}:ipv4" => merge(server, {
+        "ip_address" = hcloud_server.servers[server.name].ipv4_address
+        "server"     = server.name
+      }) if(try(server.dns_ptr, null) != null && server.dns_ptr != "")
+    },
+    {
+      for server in local.servers : "${server.name}:ipv6" => merge(server, {
+        "ip_address" = hcloud_server.servers[server.name].ipv6_address
+        "server"     = server.name
+      }) if(try(server.dns_ptr, null) != null && server.dns_ptr != "")
+    }
+  )
+
   # Build a map of all provided server network objects, indexed by server
-  # name and subnet
+  # name and subnet ID:
   networks = {
     for network in flatten([
       for server in local.servers : [
         for network in server.networks : merge(network, {
           "server" = server.name
         })
-      ] if(lookup(server, "networks", null) != null)
-    ]) : "${network.server}:${network.subnet}" => network
+      ] if(try(server.networks, null) != null)
+    ]) : "${network.server}:${network.subnet_id}" => network
   }
 }
 
@@ -39,8 +56,10 @@ resource "hcloud_server" "servers" {
   server_type = each.value.server_type
   backups     = each.value.backups
   datacenter  = each.value.datacenter
+  iso         = each.value.iso
   keep_disk   = each.value.keep_disk
   location    = each.value.location
+  rescue      = each.value.rescue
   ssh_keys    = each.value.ssh_keys
   user_data   = each.value.user_data
 
@@ -52,29 +71,12 @@ resource "hcloud_server" "servers" {
 # Server RDNS
 # -----------
 
-resource "hcloud_rdns" "servers" {
-  for_each   = merge(
-    {
-      for name, server in hcloud_server.servers : "${name}:ipv4" => {
-        "dns_ptr"    = local.servers[name].dns_ptr
-        "ip_address" = server.ipv4_address
-        "server_id"  = server.id
-        } if(lookup(local.servers[name], "dns_ptr", null) != null &&
-            local.servers[name].dns_ptr != "")
-    },
-    {
-      for name, server in hcloud_server.servers : "${name}:ipv6" => {
-        "dns_ptr"    = local.servers[name].dns_ptr
-        "ip_address" = server.ipv6_address
-        "server_id"  = server.id
-        } if(lookup(local.servers[name], "dns_ptr", null) != null &&
-            local.servers[name].dns_ptr != "")
-    }
-  )
+resource "hcloud_rdns" "server_rdns" {
+  for_each   = local.rdns
 
   dns_ptr    = each.value.dns_ptr
   ip_address = each.value.ip_address
-  server_id  = each.value.server_id
+  server_id  = hcloud_server.servers[each.value.server].id
 }
 
 
@@ -82,20 +84,11 @@ resource "hcloud_rdns" "servers" {
 # Server Networks
 # ---------------
 
-data "hcloud_network" "networks" {
-  for_each = {
-    for network in local.networks : network.name => network
-  }
-
-  name     = each.value.name
-}
-
-resource "hcloud_server_network" "servers" {
+resource "hcloud_server_network" "networks" {
   for_each   = local.networks
 
-  network_id = data.hcloud_network.networks[each.value.name].id
   server_id  = hcloud_server.servers[each.value.server].id
-  subnet_id  = "${data.hcloud_network.networks[each.value.name].id}-${each.value.subnet}"
+  subnet_id  = each.value.subnet_id
   alias_ips  = each.value.alias_ips
   ip         = each.value.ip
 }

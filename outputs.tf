@@ -3,78 +3,97 @@
 # ===================================
 
 
-# -------------
-# Output Values
-# -------------
+# ------------
+# Local Values
+# ------------
 
-output "server_ids" {
-  description = "A map of all server ids and associated names."
-  value = {
-    for name, server in hcloud_server.servers : server.id => name
-  }
-}
+locals {
+  output_servers  = [
+    for name, server in hcloud_server.servers : merge(server, {
+      "networks" = [
+        for network in hcloud_server_network.networks : network
+          if(tostring(network.server_id) == server.id)
+      ],
+      "rdns"     = [
+        for rdns in hcloud_rdns.server_rdns : rdns
+          if(tostring(rdns.server_id) == server.id)
+      ]
+    })
+  ]
 
-output "server_names" {
-  description = "A map of all server names and associated ids."
-  value = {
-    for name, server in hcloud_server.servers : name => server.id
-  }
-}
+  output_rdns     = [
+    for name, rdns in hcloud_rdns.server_rdns : merge(rdns, {
+      "name"        = name
+      "server_name" = try(local.rdns[name].server, null)
+    })
+  ]
 
-output "servers" {
-  description = "A list of all server and associated objects."
-  value = [
-    for server in hcloud_server.servers : merge(server, {
-        "rdns" = [
-          for rdns in hcloud_rdns.servers : rdns if(tostring(rdns.server_id) == server.id)
-        ]
-      }, {
-      }, {
-        "networks" = [
-          for network in hcloud_server_network.servers : network if(tostring(network.server_id) == server.id)
-        ]
+  output_networks = [
+    for name, network in hcloud_server_network.networks : merge(network, {
+      "name"        = name
+      "server_name" = try(local.networks[name].server, null)
     })
   ]
 }
 
-output "server_rdns_ids" {
-  description = "A map of all server rdns ids and associated names."
-  value = {
-    for name, rdns in hcloud_rdns.servers : rdns.id => name
+
+# -------------
+# Output Values
+# -------------
+
+output "servers" {
+  description = "A list of all server objects."
+  value       = local.output_servers
+}
+
+output "server_ids" {
+  description = "A map of all server objects indexed by ID."
+  value       = {
+    for server in local.output_servers : server.id => server
   }
 }
 
-output "server_rdns_names" {
-  description = "A map of all server rdns names and associated ids."
-  value = {
-    for name, rdns in hcloud_rdns.servers : name => rdns.id
+output "server_names" {
+  description = "A map of all server objects indexed by name."
+  value       = {
+    for server in local.output_servers : server.name => server
   }
 }
 
 output "server_rdns" {
-  description = "A list of all server rdns objects."
-  value = [
-    for rdns in hcloud_rdns.servers : rdns
-  ]
+  description = "A list of all server RDNS objects."
+  value       = local.output_rdns
 }
 
-output "server_network_ids" {
-  description = "A map of all server network ids and associated names."
-  value = {
-    for name, network in hcloud_server_network.servers : network.id => name
+output "server_rdns_ids" {
+  description = "A map of all server RDNS objects indexed by ID."
+  value       = {
+    for rdns in local.output_rdns : rdns.id => rdns
   }
 }
 
-output "server_network_names" {
-  description = "A map of all server network names and associated ids."
-  value = {
-    for name, network in hcloud_server_network.servers : name => network.id
+output "server_rdns_names" {
+  description = "A map of all server RDNS objects indexed by name."
+  value       = {
+    for rdns in local.output_rdns : rdns.name => rdns
   }
 }
 
 output "server_networks" {
   description = "A list of all server network objects."
-  value = [
-    for network in hcloud_server_network.servers : network
-  ]
+  value       = local.output_networks
+}
+
+output "server_network_ids" {
+  description = "A map of all server network objects indexed by ID."
+  value       = {
+    for network in local.output_networks : network.id => network
+  }
+}
+
+output "server_network_names" {
+  description = "A map of all server network objects indexed by name."
+  value       = {
+    for network in local.output_networks : network.name => network
+  }
 }
