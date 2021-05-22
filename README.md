@@ -28,12 +28,13 @@ module "server" {
       backups     = false
       datacenter  = null
       dns_ptr     = "server-1.example.net"
+      firewalls   = []
       iso         = null
       keep_disk   = true
       location    = "nbg1"
       networks    = [
         {
-          network   = "network-1"
+          name      = "network-1"
           subnet_id = "171740-10.0.0.0/24"
           alias_ips = []
           ip        = "10.0.0.10"
@@ -67,7 +68,7 @@ See [examples](https://github.com/peterpramb/terraform-hcloud-servers/blob/maste
 
 | Name | Version |
 |------|---------|
-| [hcloud](https://registry.terraform.io/providers/hetznercloud/hcloud) | &ge; 1.20 |
+| [hcloud](https://registry.terraform.io/providers/hetznercloud/hcloud) | &ge; 1.25 |
 
 
 ## Inputs
@@ -87,6 +88,7 @@ See [examples](https://github.com/peterpramb/terraform-hcloud-servers/blob/maste
 | [backups](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server#backups) | Enable backups for the server. | bool | no |
 | [datacenter](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server#datacenter) | Name of the datacenter to create the server in. | string | no |
 | [dns\_ptr](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/rdns#dns_ptr) | DNS name the host IPs should resolve to. | string | no |
+| [firewalls](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server#firewall_ids) | List of firewall IDs to assign to the server. | list(number) | no |
 | [iso](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server#iso) | Name or ID of the ISO image to mount. | string | no |
 | [keep\_disk](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server#keep_disk) | Keep disk unchanged on server rescale. | bool | no |
 | [location](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server#location) | Name of the location to create the server in. | string | no |
@@ -118,6 +120,7 @@ servers = [
     backups     = false
     datacenter  = null
     dns_ptr     = null
+    firewalls   = []
     iso         = null
     keep_disk   = false
     location    = null
@@ -154,6 +157,7 @@ servers = [
     "backup_window" = ""
     "backups" = false
     "datacenter" = "nbg1-dc3"
+    "firewall_ids" = []
     "id" = "8002775"
     "image" = "centos-8"
     "ipv4_address" = "192.0.2.1"
@@ -176,6 +180,7 @@ server_ids = {
     "backup_window" = ""
     "backups" = false
     "datacenter" = "nbg1-dc3"
+    "firewall_ids" = []
     "id" = "8002775"
     "image" = "centos-8"
     "ipv4_address" = "192.0.2.1"
@@ -198,6 +203,7 @@ server_names = {
     "backup_window" = ""
     "backups" = false
     "datacenter" = "nbg1-dc3"
+    "firewall_ids" = []
     "id" = "8002775"
     "image" = "centos-8"
     "ipv4_address" = "192.0.2.1"

@@ -17,6 +17,7 @@ locals {
       "backups"     = false
       "datacenter"  = null
       "dns_ptr"     = "${var.server_prefix}${index}.${var.server_domain}"
+      "firewalls"   = []
       "iso"         = null
       "keep_disk"   = true
       "location"    = element(data.hcloud_locations.all.names, index - 1)
