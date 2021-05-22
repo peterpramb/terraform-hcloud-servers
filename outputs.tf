@@ -10,6 +10,7 @@
 locals {
   output_servers  = [
     for name, server in hcloud_server.servers : merge(server, {
+      "network"  = null,
       "networks" = [
         for network in hcloud_server_network.networks : network
           if(tostring(network.server_id) == server.id)

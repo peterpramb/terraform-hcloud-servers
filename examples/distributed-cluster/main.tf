@@ -8,7 +8,7 @@
 # ------------
 
 locals {
-  # Enrich user configuration for server module
+  # Enrich user configuration for server module:
   servers = [
     for index in range(1, var.server_count + 1) : {
       "name"        = "${var.server_prefix}${index}"
@@ -22,6 +22,7 @@ locals {
       "location"    = element(data.hcloud_locations.all.names, index - 1)
       "networks"    = [
         for subnet in [var.server_subnet] : {
+          "name"      = "network-1"
           "subnet_id" = var.server_subnet
           "alias_ips" = []
           "ip"        = null

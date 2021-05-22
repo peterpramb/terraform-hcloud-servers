@@ -33,6 +33,7 @@ module "server" {
       location    = "nbg1"
       networks    = [
         {
+          network   = "network-1"
           subnet_id = "171740-10.0.0.0/24"
           alias_ips = []
           ip        = "10.0.0.10"
@@ -42,7 +43,7 @@ module "server" {
       ssh_keys    = [
         "ssh-key-1"
       ]
-      user_data   = file("${path.module}/cloud_init.conf")
+      user_data   = file("${path.module}/cloud-init.yml")
       labels      = {
         "managed"    = "true"
         "managed_by" = "Terraform"
@@ -100,6 +101,7 @@ See [examples](https://github.com/peterpramb/terraform-hcloud-servers/blob/maste
 
 | Name | Description | Type | Required |
 |------|-------------|:----:|:--------:|
+| [name](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/network#name) | Name of the network to be assigned to the server. | string | yes |
 | [subnet\_id](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server_network#subnet_id) | ID of the subnet the server should be added to. | string | yes |
 | [alias\_ips](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server_network#alias_ips) | List of additional IPs to be assigned to the server. | list(string) | no |
 | [ip](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server_network#ip) | Main IP address to be assigned to the server. | string | no |

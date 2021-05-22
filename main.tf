@@ -31,15 +31,15 @@ locals {
   )
 
   # Build a map of all provided server network objects, indexed by server
-  # name and subnet ID:
+  # and network names:
   networks = {
     for network in flatten([
       for server in local.servers : [
         for network in server.networks : merge(network, {
           "server" = server.name
         })
-      ] if(try(server.networks, null) != null)
-    ]) : "${network.server}:${network.subnet_id}" => network
+      ] if(server.networks != null)
+    ]) : "${network.server}:${network.name}" => network
   }
 }
 
