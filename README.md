@@ -104,7 +104,7 @@ See [examples](https://github.com/peterpramb/terraform-hcloud-servers/blob/maste
 | Name | Description | Type | Required |
 |------|-------------|:----:|:--------:|
 | [name](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/network#name) | Name of the network to be assigned to the server. | string | yes |
-| [subnet\_id](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server_network#subnet_id) | ID of the subnet the server should be added to. | string | yes |
+| [subnet\_id](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server_network#subnet_id) | ID of the subnet to be assigned to the server. | string | yes |
 | [alias\_ips](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server_network#alias_ips) | List of additional IPs to be assigned to the server. | list(string) | no |
 | [ip](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server_network#ip) | Main IP address to be assigned to the server. | string | no |
 
