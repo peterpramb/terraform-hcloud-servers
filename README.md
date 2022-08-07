@@ -95,7 +95,7 @@ See [examples](https://github.com/peterpramb/terraform-hcloud-servers/blob/maste
 | [keep\_disk](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server#keep_disk) | Keep disk unchanged on server rescale. | bool | no |
 | [location](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server#location) | Name of the location to create the server in. | string | no |
 | networks | List of network objects. | list(map([*network*](#network))) | no |
-| [placement](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server#placement_group_id) | ID of the placement group to be assigned to the server. | string | no |
+| [placement](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server#placement_group_id) | ID of the placement group to assign to the server. | string | no |
 | [protection](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server#delete_protection) | Protect server from deletion. | bool | no |
 | [rescue](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server#rescue) | Name of the rescue system to boot into. | string | no |
 | [ssh\_keys](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server#ssh_keys) | List of SSH key names or IDs to be deployed. | list(string) | no |
@@ -107,10 +107,10 @@ See [examples](https://github.com/peterpramb/terraform-hcloud-servers/blob/maste
 
 | Name | Description | Type | Required |
 |------|-------------|:----:|:--------:|
-| [name](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/network#name) | Name of the network to be assigned to the server. | string | yes |
-| [subnet\_id](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server_network#subnet_id) | ID of the subnet to be assigned to the server. | string | yes |
-| [alias\_ips](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server_network#alias_ips) | List of additional IPs to be assigned to the server. | list(string) | no |
-| [ip](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server_network#ip) | Main IP address to be assigned to the server. | string | no |
+| [name](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/network#name) | Name of the network to assign to the server. | string | yes |
+| [subnet\_id](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server_network#subnet_id) | ID of the subnet to assign to the server. | string | yes |
+| [alias\_ips](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server_network#alias_ips) | List of additional IPs to assign to the server. | list(string) | no |
+| [ip](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server_network#ip) | Main IP address to assign to the server. | string | no |
 
 
 ### Defaults
