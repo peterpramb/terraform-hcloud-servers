@@ -35,7 +35,7 @@ variable "server_domain" {
 variable "server_image" {
   description = "The operating system to deploy on servers."
   type        = string
-  default     = "centos-8"
+  default     = "rocky-9"
 }
 
 variable "server_keys" {

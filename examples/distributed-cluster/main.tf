@@ -29,6 +29,7 @@ locals {
           "ip"        = null
         } if(var.server_subnet != null && var.server_subnet != "")
       ]
+      "protection"  = false
       "rescue"      = null
       "ssh_keys"    = var.server_keys
       "user_data"   = null

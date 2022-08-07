@@ -23,7 +23,7 @@ module "server" {
   servers = [
     {
       name        = "server-1.example.net"
-      image       = "centos-8"
+      image       = "rocky-9"
       server_type = "cx11"
       backups     = false
       datacenter  = null
@@ -40,6 +40,7 @@ module "server" {
           ip        = "10.0.0.10"
         }
       ]
+      protection  = true
       rescue      = null
       ssh_keys    = [
         "ssh-key-1"
@@ -68,7 +69,7 @@ See [examples](https://github.com/peterpramb/terraform-hcloud-servers/blob/maste
 
 | Name | Version |
 |------|---------|
-| [hcloud](https://registry.terraform.io/providers/hetznercloud/hcloud) | &ge; 1.25 |
+| [hcloud](https://registry.terraform.io/providers/hetznercloud/hcloud) | &ge; 1.31 |
 
 
 ## Inputs
@@ -93,6 +94,7 @@ See [examples](https://github.com/peterpramb/terraform-hcloud-servers/blob/maste
 | [keep\_disk](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server#keep_disk) | Keep disk unchanged on server rescale. | bool | no |
 | [location](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server#location) | Name of the location to create the server in. | string | no |
 | networks | List of network objects. | list(map([*network*](#network))) | no |
+| [protection](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server#delete_protection) | Protect server from deletion. | bool | no |
 | [rescue](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server#rescue) | Name of the rescue system to boot into. | string | no |
 | [ssh\_keys](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server#ssh_keys) | List of SSH key names or IDs to be deployed. | list(string) | no |
 | [user\_data](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server#user_data) | Cloud-Init user data to be used for setup. | string | no |
@@ -115,7 +117,7 @@ See [examples](https://github.com/peterpramb/terraform-hcloud-servers/blob/maste
 servers = [
   {
     name        = "server-1"
-    image       = "centos-8"
+    image       = "rocky-9"
     server_type = "cx11"
     backups     = false
     datacenter  = null
@@ -125,6 +127,7 @@ servers = [
     keep_disk   = false
     location    = null
     networks    = []
+    protection  = false
     rescue      = null
     ssh_keys    = []
     user_data   = null
@@ -157,9 +160,10 @@ servers = [
     "backup_window" = ""
     "backups" = false
     "datacenter" = "nbg1-dc3"
+    "delete_protection" = false
     "firewall_ids" = []
     "id" = "8002775"
-    "image" = "centos-8"
+    "image" = "rocky-9"
     "ipv4_address" = "192.0.2.1"
     "ipv6_address" = "2001:DB8::1"
     "ipv6_network" = "2001:DB8::/64"
@@ -169,6 +173,7 @@ servers = [
     "name" = "server-1"
     "networks" = []
     "rdns" = []
+    "rebuild_protection" = false
     "server_type" = "cx11"
     "ssh_keys" = []
     "status" = "running"
@@ -180,9 +185,10 @@ server_ids = {
     "backup_window" = ""
     "backups" = false
     "datacenter" = "nbg1-dc3"
+    "delete_protection" = false
     "firewall_ids" = []
     "id" = "8002775"
-    "image" = "centos-8"
+    "image" = "rocky-9"
     "ipv4_address" = "192.0.2.1"
     "ipv6_address" = "2001:DB8::1"
     "ipv6_network" = "2001:DB8::/64"
@@ -192,6 +198,7 @@ server_ids = {
     "name" = "server-1"
     "networks" = []
     "rdns" = []
+    "rebuild_protection" = false
     "server_type" = "cx11"
     "ssh_keys" = []
     "status" = "running"
@@ -203,9 +210,10 @@ server_names = {
     "backup_window" = ""
     "backups" = false
     "datacenter" = "nbg1-dc3"
+    "delete_protection" = false
     "firewall_ids" = []
     "id" = "8002775"
-    "image" = "centos-8"
+    "image" = "rocky-9"
     "ipv4_address" = "192.0.2.1"
     "ipv6_address" = "2001:DB8::1"
     "ipv6_network" = "2001:DB8::/64"
@@ -215,6 +223,7 @@ server_names = {
     "name" = "server-1"
     "networks" = []
     "rdns" = []
+    "rebuild_protection" = false
     "server_type" = "cx11"
     "ssh_keys" = []
     "status" = "running"

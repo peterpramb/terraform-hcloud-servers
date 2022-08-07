@@ -49,22 +49,24 @@ locals {
 # -------
 
 resource "hcloud_server" "servers" {
-  for_each     = local.servers
+  for_each           = local.servers
 
-  name         = each.value.name
-  image        = each.value.image
-  server_type  = each.value.server_type
-  backups      = each.value.backups
-  datacenter   = each.value.datacenter
-  firewall_ids = each.value.firewalls
-  iso          = each.value.iso
-  keep_disk    = each.value.keep_disk
-  location     = each.value.location
-  rescue       = each.value.rescue
-  ssh_keys     = each.value.ssh_keys
-  user_data    = each.value.user_data
+  name               = each.value.name
+  image              = each.value.image
+  server_type        = each.value.server_type
+  backups            = each.value.backups
+  datacenter         = each.value.datacenter
+  delete_protection  = each.value.protection
+  firewall_ids       = each.value.firewalls
+  iso                = each.value.iso
+  keep_disk          = each.value.keep_disk
+  location           = each.value.location
+  rebuild_protection = each.value.protection
+  rescue             = each.value.rescue
+  ssh_keys           = each.value.ssh_keys
+  user_data          = each.value.user_data
 
-  labels       = each.value.labels
+  labels             = each.value.labels
 }
 
 

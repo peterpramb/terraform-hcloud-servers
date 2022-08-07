@@ -8,21 +8,21 @@
 # ---------------
 
 variable "servers" {
-  description = "The list of server objects to be managed. Each server object supports the following parameters: 'name' (string, required), 'image' (string, required), 'server_type' (string, required), 'backups' (bool, optional), 'datacenter' (string, optional), 'dns_ptr' (string, optional), 'firewalls' (list of firewall IDs, optional), 'iso' (string, optional), 'keep_disk' (bool, optional), 'location' (string, optional), 'networks' (list of network objects, optional), 'rescue' (string, optional), 'ssh_keys' (list of SSH key IDs/names, optional), 'user_data' (string, optional), 'labels' (map of KV pairs, optional). Each network object supports the following parameters: 'name' (string, required), 'subnet_id' (string, required), 'alias_ips' (list of IP addresses, optional), 'ip' (string, optional)."
+  description = "The list of server objects to be managed. Each server object supports the following parameters: 'name' (string, required), 'image' (string, required), 'server_type' (string, required), 'backups' (bool, optional), 'datacenter' (string, optional), 'dns_ptr' (string, optional), 'firewalls' (list of firewall IDs, optional), 'iso' (string, optional), 'keep_disk' (bool, optional), 'location' (string, optional), 'networks' (list of network objects, optional), 'protection' (bool, optional), 'rescue' (string, optional), 'ssh_keys' (list of SSH key IDs/names, optional), 'user_data' (string, optional), 'labels' (map of KV pairs, optional). Each network object supports the following parameters: 'name' (string, required), 'subnet_id' (string, required), 'alias_ips' (list of IP addresses, optional), 'ip' (string, optional)."
 
   type        = list(
     object({
-      name         = string
-      image        = string
-      server_type  = string
-      backups      = bool
-      datacenter   = string
-      dns_ptr      = string
-      firewalls    = list(number)
-      iso          = string
-      keep_disk    = bool
-      location     = string
-      networks     = list(
+      name        = string
+      image       = string
+      server_type = string
+      backups     = bool
+      datacenter  = string
+      dns_ptr     = string
+      firewalls   = list(number)
+      iso         = string
+      keep_disk   = bool
+      location    = string
+      networks    = list(
         object({
           name      = string
           subnet_id = string
@@ -30,17 +30,18 @@ variable "servers" {
           ip        = string
         })
       )
-      rescue       = string
-      ssh_keys     = list(string)
-      user_data    = string
-      labels       = map(string)
+      protection  = bool
+      rescue      = string
+      ssh_keys    = list(string)
+      user_data   = string
+      labels      = map(string)
     })
   )
 
   default     = [
     {
       name        = "server-1"
-      image       = "centos-8"
+      image       = "rocky-9"
       server_type = "cx11"
       backups     = false
       datacenter  = null
@@ -50,6 +51,7 @@ variable "servers" {
       keep_disk   = false
       location    = null
       networks    = []
+      protection  = false
       rescue      = null
       ssh_keys    = []
       user_data   = null
