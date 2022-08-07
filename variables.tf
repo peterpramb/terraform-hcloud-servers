@@ -8,7 +8,7 @@
 # ---------------
 
 variable "servers" {
-  description = "The list of server objects to be managed. Each server object supports the following parameters: 'name' (string, required), 'image' (string, required), 'server_type' (string, required), 'backups' (bool, optional), 'datacenter' (string, optional), 'dns_ptr' (string, optional), 'firewalls' (list of firewall IDs, optional), 'iso' (string, optional), 'keep_disk' (bool, optional), 'location' (string, optional), 'networks' (list of network objects, optional), 'placement' (string, optional), 'protection' (bool, optional), 'rescue' (string, optional), 'ssh_keys' (list of SSH key IDs/names, optional), 'user_data' (string, optional), 'labels' (map of KV pairs, optional). Each network object supports the following parameters: 'name' (string, required), 'subnet_id' (string, required), 'alias_ips' (list of IP addresses, optional), 'ip' (string, optional)."
+  description = "The list of server objects to be managed. Each server object supports the following parameters: 'name' (string, required), 'image' (string, required), 'server_type' (string, required), 'backups' (bool, optional), 'datacenter' (string, optional), 'dns_ptr' (string, optional), 'firewalls' (list of firewall IDs, optional), 'iso' (string, optional), 'keep_disk' (bool, optional), 'location' (string, optional), 'networks' (list of network objects, optional), 'placement' (string, optional), 'protection' (bool, optional), 'public_net' (ipv4/ipv6 string tuple, optional), 'rescue' (string, optional), 'ssh_keys' (list of SSH key IDs/names, optional), 'user_data' (string, optional), 'labels' (map of KV pairs, optional). Each network object supports the following parameters: 'name' (string, required), 'subnet_id' (string, required), 'alias_ips' (list of IP addresses, optional), 'ip' (string, optional)."
 
   type        = list(
     object({
@@ -32,6 +32,7 @@ variable "servers" {
       )
       placement   = string
       protection  = bool
+      public_net  = tuple([string, string])
       rescue      = string
       ssh_keys    = list(string)
       user_data   = string
@@ -54,6 +55,7 @@ variable "servers" {
       networks    = []
       placement   = null
       protection  = false
+      public_net  = null
       rescue      = null
       ssh_keys    = []
       user_data   = null

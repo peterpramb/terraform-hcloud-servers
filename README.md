@@ -42,6 +42,10 @@ module "server" {
       ]
       placement   = "57826"
       protection  = true
+      public_net  = [
+        "11011913",
+        "disabled"
+      ]
       rescue      = null
       ssh_keys    = [
         "ssh-key-1"
@@ -70,7 +74,7 @@ See [examples](https://github.com/peterpramb/terraform-hcloud-servers/blob/maste
 
 | Name | Version |
 |------|---------|
-| [hcloud](https://registry.terraform.io/providers/hetznercloud/hcloud) | &ge; 1.31 |
+| [hcloud](https://registry.terraform.io/providers/hetznercloud/hcloud) | &ge; 1.35 |
 
 
 ## Inputs
@@ -97,6 +101,7 @@ See [examples](https://github.com/peterpramb/terraform-hcloud-servers/blob/maste
 | networks | List of network objects. | list(map([*network*](#network))) | no |
 | [placement](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server#placement_group_id) | ID of the placement group to assign to the server. | string | no |
 | [protection](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server#delete_protection) | Protect server from deletion. | bool | no |
+| [public\_net](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server#public_net) | The primary IP(s) to assign to the server. | tuple([*public\_net*](#public_net)) | no |
 | [rescue](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server#rescue) | Name of the rescue system to boot into. | string | no |
 | [ssh\_keys](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server#ssh_keys) | List of SSH key names or IDs to be deployed. | list(string) | no |
 | [user\_data](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server#user_data) | Cloud-Init user data to be used for setup. | string | no |
@@ -111,6 +116,14 @@ See [examples](https://github.com/peterpramb/terraform-hcloud-servers/blob/maste
 | [subnet\_id](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server_network#subnet_id) | ID of the subnet to assign to the server. | string | yes |
 | [alias\_ips](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server_network#alias_ips) | List of additional IPs to assign to the server. | list(string) | no |
 | [ip](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server_network#ip) | Main IP address to assign to the server. | string | no |
+
+
+#### *public\_net*
+
+| Index | Description | Type | Required |
+|:-----:|-------------|:----:|:--------:|
+| \[0] | The primary IPv4 address to assign to the server. | string | yes |
+| \[1] | The primary IPv6 network to assign to the server. | string | yes |
 
 
 ### Defaults
@@ -131,6 +144,7 @@ servers = [
     networks    = []
     placement   = null
     protection  = false
+    public_net  = null
     rescue      = null
     ssh_keys    = []
     user_data   = null
@@ -175,6 +189,14 @@ servers = [
     "location" = "nbg1"
     "name" = "server-1"
     "networks" = []
+    "public_net" = [
+      {
+        "ipv4" = 0
+        "ipv4_enabled" = true
+        "ipv6" = 0
+        "ipv6_enabled" = true
+      },
+    ]
     "rdns" = []
     "rebuild_protection" = false
     "server_type" = "cx11"
@@ -200,6 +222,14 @@ server_ids = {
     "location" = "nbg1"
     "name" = "server-1"
     "networks" = []
+    "public_net" = [
+      {
+        "ipv4" = 0
+        "ipv4_enabled" = true
+        "ipv6" = 0
+        "ipv6_enabled" = true
+      },
+    ]
     "rdns" = []
     "rebuild_protection" = false
     "server_type" = "cx11"
@@ -225,6 +255,14 @@ server_names = {
     "location" = "nbg1"
     "name" = "server-1"
     "networks" = []
+    "public_net" = [
+      {
+        "ipv4" = 0
+        "ipv4_enabled" = true
+        "ipv6" = 0
+        "ipv6_enabled" = true
+      },
+    ]
     "rdns" = []
     "rebuild_protection" = false
     "server_type" = "cx11"

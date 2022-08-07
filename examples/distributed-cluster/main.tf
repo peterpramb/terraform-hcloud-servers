@@ -31,6 +31,7 @@ locals {
       ]
       "placement"   = null
       "protection"  = false
+      "public_net"  = [null, "disabled"]
       "rescue"      = null
       "ssh_keys"    = var.server_keys
       "user_data"   = null

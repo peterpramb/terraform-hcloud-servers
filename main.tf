@@ -10,7 +10,16 @@
 locals {
   # Build a map of all provided server objects, indexed by server name:
   servers  = {
-    for server in var.servers : server.name => server
+    for server in var.servers : server.name => merge(server, {
+      "pub_ipv4_enabled" = (try(server.public_net[0], null) != "disabled" ?
+                            true : false)
+      "pub_ipv4"         = (try(server.public_net[0], null) != "disabled" ?
+                            try(server.public_net[0], null) : null)
+      "pub_ipv6_enabled" = (try(server.public_net[1], null) != "disabled" ?
+                            true : false)
+      "pub_ipv6"         = (try(server.public_net[1], null) != "disabled" ?
+                            try(server.public_net[1], null) : null)
+    })
   }
 
   # Build a map of all provided server RDNS objects, indexed by server
@@ -66,6 +75,13 @@ resource "hcloud_server" "servers" {
   rescue             = each.value.rescue
   ssh_keys           = each.value.ssh_keys
   user_data          = each.value.user_data
+
+  public_net {
+    ipv4_enabled = each.value.pub_ipv4_enabled
+    ipv4         = each.value.pub_ipv4
+    ipv6_enabled = each.value.pub_ipv6_enabled
+    ipv6         = each.value.pub_ipv6
+  }
 
   labels             = each.value.labels
 }
