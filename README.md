@@ -40,6 +40,7 @@ module "server" {
           ip        = "10.0.0.10"
         }
       ]
+      placement   = "57826"
       protection  = true
       rescue      = null
       ssh_keys    = [
@@ -94,6 +95,7 @@ See [examples](https://github.com/peterpramb/terraform-hcloud-servers/blob/maste
 | [keep\_disk](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server#keep_disk) | Keep disk unchanged on server rescale. | bool | no |
 | [location](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server#location) | Name of the location to create the server in. | string | no |
 | networks | List of network objects. | list(map([*network*](#network))) | no |
+| [placement](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server#placement_group_id) | ID of the placement group to be assigned to the server. | string | no |
 | [protection](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server#delete_protection) | Protect server from deletion. | bool | no |
 | [rescue](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server#rescue) | Name of the rescue system to boot into. | string | no |
 | [ssh\_keys](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server#ssh_keys) | List of SSH key names or IDs to be deployed. | list(string) | no |
@@ -127,6 +129,7 @@ servers = [
     keep_disk   = false
     location    = null
     networks    = []
+    placement   = null
     protection  = false
     rescue      = null
     ssh_keys    = []

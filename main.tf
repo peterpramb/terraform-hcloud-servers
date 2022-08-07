@@ -61,6 +61,7 @@ resource "hcloud_server" "servers" {
   iso                = each.value.iso
   keep_disk          = each.value.keep_disk
   location           = each.value.location
+  placement_group_id = each.value.placement
   rebuild_protection = each.value.protection
   rescue             = each.value.rescue
   ssh_keys           = each.value.ssh_keys

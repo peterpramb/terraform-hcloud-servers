@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Input `placement` for placement group assignment
 - Input `protection` for delete protection
 
 ## [1.0.0] - 2021-05-25
